@@ -1,0 +1,17 @@
+{
+  "name": "For Stella, With Love",
+  "short_name": "For Stella",
+  "lang": "ko",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faede8",
+  "theme_color": "#faede8",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

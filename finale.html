@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For Stella — 마지막 선물 효과 미리보기</title>
+<style>
+:root{--purple:#8d526d;--ink:#574e50;--faint:#b79b9f;--cream:#fffaf6}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;background:radial-gradient(ellipse at 10% 10%,#f9e9e4,transparent 70%),linear-gradient(140deg,#faf2eb,#f2e7e8);font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;color:var(--ink)}
+.preview-label{font:600 11px/1.5 system-ui,sans-serif;letter-spacing:.22em;color:#a17a8a;text-align:center;margin-bottom:11px}
+.back-link{display:block;text-align:center;margin-top:10px;font-size:12px;color:#956b81;text-decoration:none;padding:6px 12px}
+.back-link:focus-visible{outline:2px solid #956b81}
+.phone{position:relative;width:min(100%,420px);height:min(800px,calc(100dvh - 112px));min-height:570px;overflow:hidden;border:1px solid #e9d8d3;border-radius:27px;background:linear-gradient(160deg,#fffdfb,#fff7f3);box-shadow:0 16px 50px #8b697044;isolation:isolate}
+.phone::after{content:"";pointer-events:none;position:absolute;inset:9px;border:1px solid #f2e3e0;border-radius:21px;z-index:2}
+.stage{position:absolute;inset:0;padding:20px 25px 19px;display:flex;flex-direction:column;min-height:0}
+.title-top{font:600 10px/1.3 Georgia,serif;letter-spacing:.13em;color:#ac8092;text-align:center;margin:2px 0 5px}
+h1{font:700 clamp(21px,5vw,26px)/1.3 Georgia,'Malgun Gothic',serif;text-align:center;letter-spacing:-.045em;color:#955b76;margin:0 0 7px}
+.sub{text-align:center;font-size:11px;color:#aa9297;line-height:1.5;margin:0 0 8px}
+.rows{flex:1;display:grid;grid-template-rows:repeat(24,minmax(0,1fr));gap:0;min-height:0;overflow:hidden}
+.message{min-width:0;display:flex;gap:4px;align-items:center;white-space:nowrap;border-bottom:1px solid #f1e4e3;overflow:hidden;line-height:1;opacity:1;transition:opacity .65s ease}
+.number{flex:0 0 27px;font-size:9px;letter-spacing:.05em;color:#bca5a8;text-align:left;font-weight:700}
+.initial{flex:0 0 auto;font-size:clamp(16px,2.8vh,20px);font-weight:850;color:var(--purple);line-height:1.1;display:inline-block;position:relative;z-index:1}
+.tail{min-width:0;overflow:hidden;text-overflow:ellipsis;color:#8d7c80;font-size:11px;white-space:nowrap;letter-spacing:-.02em;opacity:.88}
+.bottom{position:relative;z-index:5;padding-top:12px;display:flex;align-items:center;gap:12px;justify-content:center;min-height:57px}
+.action{border:0;border-radius:999px;color:#fff;font-size:13px;font-weight:700;padding:11px 21px;background:#aa6880;box-shadow:0 6px 16px #b77c9355;cursor:pointer}
+.action:focus-visible{outline:3px solid #d8b0c2;outline-offset:3px}
+.hint{font-size:10px;color:#a48b93;line-height:1.5;text-align:center;margin:0}
+/* Keep the 24 original sentences visible behind the flying initials. */
+.reveal{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px 26px 99px;z-index:3;opacity:0;pointer-events:none;transition:opacity .4s ease;background:transparent;isolation:isolate}
+.reveal::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 90% 65% at 50% 50%,rgba(255,249,246,.99),rgba(255,248,245,.95) 75%,rgba(255,248,245,.88))}
+.reveal>*{position:relative;z-index:1}
+.reveal .overline{font-size:11px;letter-spacing:.19em;color:#b48797;font-weight:800;margin:0 0 25px}
+.phrase{line-height:1.9;text-align:center;font-size:clamp(21px,5.7vw,27px);letter-spacing:-.06em;color:#91506e;font-weight:800;word-break:keep-all;max-width:345px}
+.word{white-space:nowrap;display:inline-block;margin:0 .10em}
+.target{display:inline-block;white-space:pre;color:transparent}
+.reveal .signature{opacity:0;margin-top:30px;text-align:center;line-height:1.85;color:#a37788;font-family:Georgia,'Malgun Gothic',serif;font-style:italic;font-size:14px;transition:opacity .75s ease}
+.heart{font-size:27px;font-style:normal;display:block;margin:0 0 6px}
+.phone.gathering .rows,.phone.gathering .title-top,.phone.gathering h1,.phone.gathering .sub{animation:stella-rows-fade 5250ms linear both}
+.phone.gathering .bottom{opacity:0;pointer-events:none;transition:opacity .4s ease}
+.phone.gathering .reveal{opacity:1;transition:none}
+.phone.gathering .reveal::before{animation:stella-veil 5250ms linear both}
+.phone.done .reveal{opacity:1}
+.phone.done .reveal::before{opacity:1}
+.phone.done .stage{opacity:0;pointer-events:none}
+/* The list fades gradually as the twenty-fourth letter is approaching its place. */
+@keyframes stella-rows-fade{0%,10%{opacity:1}50%{opacity:.80}78%{opacity:.40}95%{opacity:.07}100%{opacity:0}}
+@keyframes stella-veil{0%,45%{opacity:0}73%{opacity:.07}91%{opacity:.34}100%{opacity:1}}
+.phone.done .target{color:#91506e}
+.phone.done .signature{opacity:1}
+.letter-fly{position:fixed;z-index:99;display:block;font-weight:850;color:#985774;line-height:1;transform-origin:top left;pointer-events:none;will-change:transform,opacity;text-shadow:0 0 14px #fff7f0}
+.result-footer{position:absolute;bottom:18px;left:0;right:0;display:flex;justify-content:center;z-index:7;opacity:0;pointer-events:none;transition:opacity .5s ease}
+.phone.done .result-footer{opacity:1;pointer-events:auto}
+.result-footer .action{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;max-width:calc(100% - 40px);width:min(330px,100%);padding:12px 18px 13px;font-size:13px;line-height:1.42;border-radius:19px;background:#a66d85;letter-spacing:-.015em;box-shadow:0 8px 20px #9b6f8055;transition:transform .18s,background .18s}
+.result-footer .action:hover{background:#955c77;transform:translateY(-2px)}
+.result-footer .action:active{transform:scale(.98)}
+.result-footer .action .replay-line{display:block;white-space:nowrap}
+.result-footer .action .replay-cta{font-size:14px;font-weight:850;margin-top:2px;color:#fffbea}
+@media(max-width:390px){.stage{padding:18px 17px 18px}.number{flex-basis:24px}.tail{font-size:10px}.message{gap:3px}.reveal{padding:23px 16px}.phrase{font-size:21px}}
+@media(max-height:730px){.phone{height:calc(100dvh - 38px)}body{padding:6px 10px}.preview-label{margin-bottom:4px}.stage{padding-top:13px;padding-bottom:11px}h1{font-size:19px;margin-bottom:3px}.sub{font-size:10px;margin-bottom:4px}.bottom{padding-top:6px;min-height:45px}.action{padding:8px 16px;font-size:12px}.initial{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.stage,.message,.reveal,.signature,.result-footer{transition:none!important}.phone.gathering .rows,.phone.gathering .reveal::before{animation:none!important}}
+
+.final-photo{opacity:0;transform:translateY(13px) scale(.97);margin:17px auto 0;max-width:min(100%,270px);width:auto;max-height:0;overflow:hidden;transition:opacity 1s ease .1s,transform 1s ease .1s;filter:drop-shadow(0 7px 15px #8e6b6a35)}
+.final-photo img{display:block;max-width:100%;max-height:300px;object-fit:contain;border:7px solid #fffaf7;border-bottom-width:14px;border-radius:8px}
+.phone.done .final-photo{opacity:1;transform:translateY(0) scale(1);max-height:350px;overflow:visible}
+.phone.done .reveal{justify-content:center;padding:15px 20px 101px;}
+.phone.done .reveal .overline{margin-bottom:10px}
+.phone.done .phrase{font-size:clamp(18px,5vw,24px);line-height:1.65}
+.phone.done .signature{margin-top:9px;font-size:12px;line-height:1.3}
+.phone.done .heart{font-size:17px;margin-bottom:0}
+@media(max-height:700px){.final-photo img{max-height:220px}.phone.done .final-photo{max-height:260px}.phone.done .reveal{padding-bottom:98px}.phone.done .phrase{font-size:18px;line-height:1.45}}
+</style>
+</head>
+<body>
+<div class="preview-label">FOR STELLA · THE LAST LITTLE GIFT</div>
+<div class="phone" id="phone">
+<section class="stage" aria-label="편지 첫 글자들">
+<div class="title-top">24 DAYS · ONE LITTLE SECRET</div>
+<h1>스물네 통의 편지</h1>
+<p class="sub">다 읽은 편지들을 한자리에 모았어.</p>
+<div class="rows" id="rows"></div>
+<div class="bottom"><button class="action" id="play" type="button">마음을 모아 보기 ♡</button></div>
+</section>
+<section class="reveal" id="reveal" aria-label="아빠의 비밀 메시지"><p class="overline">THE LAST LITTLE GIFT</p><div class="phrase" id="phrase"></div><div class="final-photo"><img src="illustrations/family-memory.webp" alt="야구장에서 함께 웃는 아빠와 가족의 소중한 추억"></div><p class="signature"><span class="heart">♡</span>For Stella, With Love.<br>언제나 네 편인 아빠가</p></section>
+<div class="result-footer"><button class="action" id="replay" type="button" aria-label="감동이지?? 이런아빠가 어디있냐?? 다시 보고 싶지? 클릭!! ^^"><span class="replay-line">감동이지??</span><span class="replay-line">이런아빠가 어디있냐??</span><span class="replay-line replay-cta">다시 보고 싶지? 클릭!! ^^</span></button></div>
+</div>
+<a class="back-link" href="index.html">♡ 편지 목록으로 돌아가기</a>
+<script id="data" type="application/json">{"texts": ["아무리 멀리 떨어져 있어도, 벼리가 기쁜 날엔 함께 웃고 힘든 날엔 기댈 수 있는 엄마 아빠가 있어…", "빠르게 앞서가는 사람들이 너무 부러울때도 많지 그치만, 천천히 걷는 사람에게만 보이는 풍경도 또 그 속도이기 때문에 만날 수 있는 소중한 인연도 있거든…", "한 번의 실패가 네 인생을 결정하지는 않을거야… 그 실패를 어떻게 받아 들이는 지가 앞으로의 인생을 결정할 수는 있어… 그런 면에서 지금의 실패는 더 좋은 길을 발견하는 시작일 수도 있어… 실패는 성공의 어머니라고들 하잖아?? ", "텐션이 바닥인 날도 있을거야. 지치지 않는 사람은 없으니까... 그런 날엔 억지로 웃거나 씩씩한 척하지 않아도 괜찮아… 벼리의 지친모습에도 곁을 지켜주는 사람을 엄마 아빠 말고 꼭 한사람 정도는 만들어 두렴…", "벼리의 다정함이 조금의 실망감으로 돌아 오더라도 너무 상처 받지 않았으면 좋겠어… 남들에게 다정하지 않은 사람들은 스스로에게 줄수 있는 사랑의 크기도 작을 거란 생각이 드네 아빠는… 남들에게 다정한 만큼, 아니 그것보다는 조금 더 크게 벼리 스스로를 아끼고 사랑하렴.", "리듬이 좀 흐트러져? 그런 날은 그냥 흐트러진 마음으로 가볍게 지내렴… 가끔은 쉬어 가는 박자도 필요하잖아? 지독한 다이어트에 소중한 하루의 치팅데이 정도라 생각해~", "가끔은 누군가에게 미움받을 용기도 필요한 것 같아… 모든 사람을 만족시키며 살 수는 없으니까…. 인간관계는 상대적인 거라 상대방의 상태에 따라서 같은 말도 다르게 전달 될 때도 있고… 억지로 바로 잡으려고 하지 않아도 되, 나를 잘 이해 하는 사람은 곰곰히 생각하고 다시 나를 찾게 될거야…", "세상엔 아직 네가 만나지 못한 좋은 사람들과 경험하지 못한 행복이 아주 많이 남아 있어… 지금 알고 있는 세상의 크기에 생각을 끼워 맞추지 말고, 언제나 더 큰 세상을 꿈꾸면 좋겠어…", "상처받았다고 네 다정함까지 버리지는 마… 언젠가 아빠가 얘기 했듯이 누군가에겐 그 다정함이 세상에서 가장 따뜻한 선물일 테니까…", "에너지가 모두 소진된 날에는 아무것도 하지 않아도 돼… 쉬는 건 게으른 게 아니라 다시 걸어가기 위한 준비야… 잘 쉬고 잘 노는 사람이 일도 잘 해… ", "서두르지 않아도 돼… 조바심이 일을 망치는 경우도 많지… 꽃마다 피어나는 계절이 다르듯 사람마다 빛나는 순간도 다르니까… 오늘이 정말 힘든 날이었다면 곧 오늘 힘들었던 만큼 더 크고 밝게 별처럼 빛나는 순간이 올거야…", "가장 행복했던 순간을 떠올려 봐… 늘 떠올리며 기운내고 있지??? 오늘 어려운 상황이 있었어도 한발짝 물러서서 크게 한 호흡하고서 돌아보면 의외로 그저 평범한 이벤트였을지도 몰라…", "장담하건대, 인생에는 계획대로 되지 않아… 쉬운 일도 없고 내맘대로 되는 건 더 없지… 하지만 그렇게 흘러가는 게 오히려 다행인 일들도 참 많더라…", "소중한 사람을 곁에 두는 것도 중요하지만, 너를 소중히 여기는 사람 곁에 머무는 것도 중요해… ", "중요한 선택을 앞두었을 때 남들의 기대보다 네 마음의 소리에 조금 더 귀 기울여… 비유가 좀 그렇지만, 주식도 도박도 남말 듣다가 폭망하는 경우가 많더라… ㅎ", "한참을 고민하고도 답을 찾지 못할 때가 있어... 그럴 땐 당장 답을 내리지 않아도 괜찮아… 가끔은 잊고있던 그때는 풀지 못했던 3년전 수학문제의 정답이 떠 오를 때도 있잖아??? 벼리는 없나?? 아빤 가끔 있거든… 가끔은 너무 집중할때보다 조금 느슨하게 생각의 속도를 느리게 할때 더 좋은 생각이, 방향이, 답이 나올때도 있어…", "존중받기 위해 네가 가진 좋은 모습을 억지로 바꿀 필요는 없어… 있는 그대로의 너를 아끼는 사람을 만나면 돼… 우리 딸은 욕도 안하고(아닌가? ^^) 다정하고 이쁘고 통통하고 해서 있는 그대로를 바라 봐 줄 수 있는 좋은 친구들 많이 만들 수 있을거야..", "재능이란게 처음부터 특별한 능력만을 뜻하기도 하지만, 좋아하는 무언가를 오래도록 포기하지 않을 수 있는 능력도 큰 재능이지… ", "인생은 운과 타이밍이지만, 그 순간을 알아보고 붙잡을 수 있는 건 준비해 온 너 자신이란다…", "거창한 성공을 이루지 않아도 괜찮아… 아빠는 앞으로 벼리가 자기 삶을 좋아하며 살아가는 사람이 되었으면 해… 그러기 위해 내 앞가림 할만한 무언가를 준비하는 과정이라고 생각하면 지금에 좀 더 집중 할 수 있지 않을까??", "잊지 마… 누군가 너를 알아주지 않는다고 해서 벼리가 또 그 진심의 가치가 작아지는 건 절대 아니야…", "지금의 많은 허들과 걱정들이 언젠가 웃으며 이야기할 수 있는 추억이 되기를, 아빠는 늘 바라고 있어… ", "말하지 않아도 모든 걸 알아주는 아빠라면 좋겠지만, 아빠도 서툴 때가 많아... 드라마에도 나온 대사이지만 아빠도 아빠가 처음이잖아… 그러니 아빠가 잘 모르고 하는 말이면 바로 잡아 주고, 힘들 땐 언제든 이야기해 주렴…", "길이 어디로 이어지든, 얼마나 멀리 가든, 어떤 모습으로 돌아오든, 아빠는 언제나 벼리가 돌아와 쉴 수 있는 자리에 있을 게… 최선을 다해서 오래 건강해 볼게…\n딸도 늘 행복할 수 있게 항상 건강을 준비하자… 오래오래 아빠랑 엄마랑 행복하게 잘 살자… 말 안해도 잘 알겠지만, 사랑해 딸!"], "phrase": "아빠한텐 벼리가 세상에서 가장 소중한 존재인 거 잊지말길"}</script>
+<script>
+(()=>{
+'use strict';
+const {texts,phrase}=JSON.parse(document.getElementById('data').textContent);
+const phone=document.getElementById('phone');
+const rows=document.getElementById('rows');
+const phraseEl=document.getElementById('phrase');
+const initialEls=[];const targetEls=[];
+let playing=false;let countdownTimer=null;let activeClones=[];let activeAnimations=[];
+const frag=document.createDocumentFragment();
+texts.forEach((text,i)=>{
+  const row=document.createElement('div');row.className='message';
+  const no=document.createElement('span');no.className='number';no.textContent=String(i+1).padStart(2,'0');
+  const first=document.createElement('span');first.className='initial';first.textContent=text[0];
+  const tail=document.createElement('span');tail.className='tail';tail.textContent=text.slice(1).replaceAll('\n',' ');
+  row.append(no,first,tail);frag.appendChild(row);initialEls.push(first);
+});rows.appendChild(frag);
+const targetFrag=document.createDocumentFragment();
+phrase.split(' ').forEach((w,i)=>{
+ const word=document.createElement('span');word.className='word';
+ [...w].forEach(ch=>{const span=document.createElement('span');span.className='target';span.textContent=ch;targetEls.push(span);word.appendChild(span)});
+ targetFrag.appendChild(word);if(i!==phrase.split(' ').length-1)targetFrag.appendChild(document.createTextNode(' '));
+});phraseEl.appendChild(targetFrag);
+if(initialEls.map(e=>e.textContent).join('') !== targetEls.map(e=>e.textContent).join(''))throw new Error('첫글자와 비밀문장이 일치하지 않습니다.');
+function cancel(){activeAnimations.forEach(a=>a.cancel());activeAnimations=[];activeClones.forEach(c=>c.remove());activeClones=[]}
+function reset(){if(countdownTimer!==null){clearTimeout(countdownTimer);countdownTimer=null;}cancel();phone.classList.remove('gathering','done');playing=false;document.getElementById('play').disabled=false;document.getElementById('play').textContent='마음을 모아 보기 ♡'}
+async function start(){
+ if(playing)return;
+ playing=true;phone.classList.remove('done');document.getElementById('play').disabled=true;
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduce){phone.classList.add('done');return;}
+ // Keep initial and destination rectangles in the same viewport for FLIP animation.
+ const src=initialEls.map(el=>el.getBoundingClientRect());
+ const dst=targetEls.map(el=>el.getBoundingClientRect());
+ phone.classList.add('gathering');
+ const animations=initialEls.map((el,i)=>{
+  const r=src[i],t=dst[i];
+  const clone=document.createElement('span');clone.className='letter-fly';clone.textContent=el.textContent;
+  clone.style.cssText+=`left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;font-size:${getComputedStyle(el).fontSize};`;
+  document.body.appendChild(clone);activeClones.push(clone);
+  const dx=t.left-r.left,dy=t.top-r.top,scale=t.width/r.width;
+  const flight=clone.animate([
+    {transform:'translate(0,0) scale(1)',opacity:1,offset:0},
+    {transform:`translate(${dx*.39}px,${dy*.34}px) scale(${(1+scale)/2*1.15})`,opacity:1,offset:.43},
+    {transform:`translate(${dx}px,${dy}px) scale(${scale})`,opacity:1,offset:1}
+  ],{duration:1800,delay:i*150,easing:'cubic-bezier(.29,.65,.16,1)',fill:'forwards'});
+  // Each source character remains in its line until it starts moving.
+  const sourceFade=el.animate([
+    {opacity:1,offset:0},
+    {opacity:0,offset:.02},
+    {opacity:0,offset:1}
+  ],{duration:1800,delay:i*150,fill:'forwards'});
+  activeAnimations.push(flight,sourceFade);
+  return flight.finished.catch(()=>{});
+ });
+ await Promise.all(animations);
+ phone.classList.remove('gathering');phone.classList.add('done');
+ cancel();
+}
+function scheduleStart(){
+ if(playing||countdownTimer!==null)return;
+ const playBtn=document.getElementById('play');
+ playBtn.disabled=true;playBtn.textContent='잠시 마음을 바라봐 줘 ♡';
+ countdownTimer=window.setTimeout(()=>{countdownTimer=null;start()},3000);
+}
+document.getElementById('play').addEventListener('click',scheduleStart);
+document.getElementById('replay').addEventListener('click',()=>{reset();scheduleStart()});
+window.__stella={start,reset,scheduleStart,phase:()=>({waiting:countdownTimer!==null,gathering:phone.classList.contains('gathering'),done:phone.classList.contains('done')})};
+scheduleStart();
+})();
+</script>
+</body></html>

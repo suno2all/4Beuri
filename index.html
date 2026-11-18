@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#faede8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="For Stella" />
+  <meta name="description" content="벼리를 위한 스물네 통의 작은 편지" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" /><link rel="manifest" href="manifest.webmanifest" />
+  <title>For Stella, With Love ♡</title>
+  <style>
+    :root{--ink:#51464d;--muted:#8b797e;--rose:#ae637d;--roseDark:#824058;--cream:#fffaf5;--line:#e9d8d3;--shadow:0 22px 55px rgba(101,55,65,.13)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;background:#faede8;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;line-height:1.65;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.3;background:radial-gradient(ellipse 60% 55% at 5% 4%,#ffe7d5 0%,transparent 70%),radial-gradient(ellipse 58% 48% at 100% 75%,#e9cfdc 0%,transparent 78%);z-index:-1}
+    button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visible{outline:3px solid #925a75;outline-offset:3px}
+    .app{max-width:680px;margin:auto;padding:16px 20px 60px}.brand{height:48px;display:flex;align-items:center;justify-content:space-between}.brand-name{font-family:Georgia,serif;font-style:italic;font-size:19px;color:#88556d;font-weight:bold;letter-spacing:-.02em}.from{font-size:12px;color:var(--muted);letter-spacing:.02em}
+    .hero{position:relative;margin:24px 0 22px;text-align:center;padding:26px 14px 16px}.sparkle{position:absolute;color:#c48aa0;font-size:22px;opacity:.85;user-select:none}.sparkle.s1{top:3px;left:10%}.sparkle.s2{top:46px;right:7%;font-size:16px}.sparkle.s3{bottom:16px;left:4%;font-size:17px}
+    .tiny-label{font-size:11px;letter-spacing:.19em;font-weight:750;color:#b57f8f;text-transform:uppercase}
+    h1{font-family:Georgia,"Apple SD Gothic Neo",serif;margin:13px 0 7px;font-size:clamp(32px,6vw,47px);font-weight:700;line-height:1.16;letter-spacing:-.03em;color:#7e4b65}
+    .hero-ko{font-size:17px;font-weight:650;margin:13px 0 8px;line-height:1.6}
+    .hero-desc{color:var(--muted);font-size:13px;margin:4px auto 22px;max-width:390px;word-break:keep-all}
+    .main-btn{display:inline-flex;justify-content:center;align-items:center;gap:10px;border:0;border-radius:999px;background:#a7617a;color:white;padding:14px 27px;font-weight:740;min-height:52px;box-shadow:0 8px 22px #ad678153;transition:transform .16s,background .2s}
+    .main-btn:active{transform:scale(.97)}.main-btn:hover{background:#94516b}.main-btn:disabled{opacity:.55;cursor:default}
+    .progress-panel{background:#fff9f5b9;border:1px solid #fff;border-radius:21px;padding:19px 20px 16px;box-shadow:0 6px 22px #9e657015}.progress-row{display:flex;justify-content:space-between;align-items:center;gap:10px}.progress-title{font-weight:770;font-size:14px}.progress-count{font-size:13px;color:#9c6d7d;font-weight:750;font-variant-numeric:tabular-nums}.progress-track{height:8px;background:#efdcd9;border-radius:999px;overflow:hidden;margin:12px 0 8px}.progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#d9a0ae,#ae647e);transition:width .35s}.progress-hint{font-size:12px;color:var(--muted);margin:0}
+    .section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:33px 2px 16px}.section-title h2{font-size:18px;margin:0;font-weight:760;letter-spacing:-.02em}.section-title span{font-size:11px;color:#b18892}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+    .tile{position:relative;border:1px solid #ead5d1;border-radius:17px;min-height:106px;aspect-ratio:.88;background:linear-gradient(155deg,#fffdf9,#f6e8e3);color:var(--ink);padding:11px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 12px #9d707017;transition:transform .16s,box-shadow .16s,border .16s}
+    .tile:active:not(:disabled){transform:scale(.96)}.tile:disabled{cursor:default}.tile-num{font-size:11px;letter-spacing:.12em;color:#ad8992;font-weight:770;font-variant-numeric:tabular-nums}.tile-icon{font-size:25px;height:30px;line-height:30px;color:#ae6981}.tile-state{font-size:10px;font-weight:650;color:#a07f86}
+    .tile.ready{background:linear-gradient(150deg,#fffdfa,#f7dfe7);border-color:#ce9cad;box-shadow:0 0 0 2px #fff7f4,0 4px 17px #bb78813b}.tile.ready .tile-icon{animation:slow-pulse 2s infinite}.tile.opened{background:linear-gradient(150deg,#f9f2ea,#f5eae2)}.tile.opened .tile-icon{color:#bb8e91}
+    .tile.locked{background:#f0e5e3aa;border:1px dashed #dfc6c4;box-shadow:none;opacity:.7}.tile.locked .tile-icon{font-size:20px;color:#b49a9c}.tile.locked .tile-state{font-size:10px}
+    .footnote{text-align:center;margin:24px auto 0;font-size:11px;color:#947d82;max-width:350px;line-height:1.8;word-break:keep-all}.footer{text-align:center;font-family:Georgia,serif;font-style:italic;color:#b27e90;font-size:16px;padding-top:32px}
+    .final-btn{width:100%;margin-top:22px;min-height:62px;background:#87445f;color:#fff;border:0;border-radius:17px;box-shadow:var(--shadow);font-size:15px;font-weight:700;animation:slow-pulse 2s infinite}
+    .overlay{position:fixed;inset:0;z-index:20;background:rgba(64,40,46,.45);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:22px 15px calc(22px + env(safe-area-inset-bottom));opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+    .overlay.visible{opacity:1;visibility:visible}.paper{position:relative;background:linear-gradient(145deg,#fffefb,#fff7f1);border-radius:22px;width:min(100%,550px);max-height:min(86dvh,760px);overflow-y:auto;box-shadow:0 25px 80px #4e323b65;padding:39px 29px 27px;transform:translateY(22px) scale(.98);transition:transform .28s;scrollbar-width:thin}.overlay.visible .paper{transform:translateY(0) scale(1)}
+    .paper::before{content:"";position:absolute;inset:11px;pointer-events:none;border:1px solid #e7d5d1;border-radius:15px}.close{position:absolute;z-index:2;top:19px;right:18px;background:#faeae7;border:0;width:34px;height:34px;border-radius:50%;font-size:20px;color:#9f7380;display:grid;place-items:center;line-height:1}
+    .letter-overline{text-align:center;color:#ad8190;letter-spacing:.18em;font-size:11px;font-weight:bold}.letter-day{text-align:center;margin:8px 0 18px;font-family:Georgia,serif;font-size:34px;color:#9a5d77;font-weight:bold}.envelope-line{width:50px;height:1px;background:#d6b1bb;margin:0 auto 21px}
+    .letter-body{font-size:16px;line-height:2.12;letter-spacing:-.025em;color:#51474b;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere;padding:0 2px}.letter-signature{text-align:right;margin-top:27px;color:#a67484;font-size:13px;font-weight:600}.letter-end{text-align:center;margin:22px 0 0}
+    .secondary-btn{background:transparent;border:1px solid #d5abb8;color:#9b5773;border-radius:999px;min-height:42px;padding:9px 23px;font-size:13px;font-weight:700}.secondary-btn:hover{background:#fcebed}
+    .secret-intro{text-align:center;color:#7b626e;font-size:15px;line-height:1.95;word-break:keep-all;margin:10px 0 24px}.secret-phrase{font-size:clamp(23px,5vw,34px);font-weight:780;line-height:1.7;letter-spacing:-.05em;color:#92516e;text-align:center;word-break:keep-all}
+    .final-letter-list{margin:24px 0 28px;display:flex;flex-direction:column;gap:0}
+    .final-letter-row{padding:15px 4px;border-bottom:1px solid #ead9d6;line-height:1.95;font-size:14px;letter-spacing:-.018em;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere}
+    .final-letter-row:last-child{border-bottom:0}
+    .final-letter-index{display:inline-block;color:#ad8992;font-size:11px;font-weight:650;min-width:26px;letter-spacing:0;vertical-align:baseline}
+    .final-letter-initial{color:#91516e;font-size:1.35em;font-weight:850}
+    .final-letter-prompt{text-align:center;margin:27px 0 18px;color:#9e6d7f;font-size:14px;font-weight:650}
+    .word{display:inline-block;margin-right:.2em;white-space:nowrap}.secret-char{display:inline-block;opacity:0;transform:translateY(13px);animation:letter-appear .4s ease forwards}.heart-finale{font-size:31px;text-align:center;margin:20px 0 0;color:#ba7089;animation:slow-pulse 2s infinite}.secret-signature{text-align:center;font-family:Georgia,serif;font-size:15px;font-style:italic;margin-top:13px;color:#aa7488}
+    .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,14px);background:#77505e;color:#fff;padding:11px 18px;border-radius:999px;z-index:50;font-size:13px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;text-align:center;max-width:calc(100% - 32px);box-shadow:0 10px 25px #55383e4d}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @keyframes slow-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}@keyframes letter-appear{to{opacity:1;transform:translateY(0)}}
+    @media(max-width:410px){.app{padding:14px 15px 50px}.grid{gap:8px}.tile{min-height:90px;border-radius:13px}.tile-icon{font-size:22px}.tile-state{font-size:9px}.paper{padding:40px 22px 26px}.letter-body{font-size:15px;line-height:2}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+    .hero-art{margin:0 auto 18px;width:min(100%,440px);height:auto;max-height:300px;border-radius:20px;display:block;object-fit:contain;box-shadow:0 8px 24px #c6a09939;}
+    .letter-art{width:100%;margin:-3px auto 22px;border-radius:15px;background:#f8eee7;box-shadow:0 5px 17px #bba09725;overflow:visible}
+    .letter-art img{width:100%;height:auto;max-height:none;display:block;object-fit:contain;border-radius:15px}
+    .art-note{font-size:10px;letter-spacing:.15em;text-align:center;margin:-9px 0 23px;color:#b78c90;font-weight:700}
+    @media(max-width:410px){.letter-art{width:100%;margin:-3px auto 22px;border-radius:15px;background:#f8eee7;box-shadow:0 5px 17px #bba09725;overflow:visible}.hero-art{margin:0 auto 18px;width:min(100%,440px);height:auto;max-height:300px;border-radius:20px;display:block;object-fit:contain;box-shadow:0 8px 24px #c6a09939;}}
+
+    .reminder-panel{margin:15px 0 4px;border:1px solid #f0d9d8;border-radius:18px;padding:17px 18px;background:#fff9f4cc;text-align:center}
+    .reminder-title{font-size:14px;font-weight:770;color:#865669;margin:0 0 5px}
+    .reminder-desc{font-size:12px;color:#927e80;line-height:1.8;margin:0 0 13px;word-break:keep-all}
+    .reminder-btn{border:1px solid #c38da0;background:#fffdfa;color:#985a72;border-radius:999px;min-height:42px;padding:9px 20px;font-weight:750;font-size:13px}
+    .reminder-help{font-size:11px;color:#a68b91;margin:9px 0 0;line-height:1.7}
+  </style>
+</head>
+<body>
+<main class="app">
+  <header class="brand"><div class="brand-name">for stella. ♡</div><div class="from">with love, from Dad</div></header>
+  <section class="hero" aria-labelledby="hero-heading">
+    <span class="sparkle s1" aria-hidden="true">✧</span><span class="sparkle s2" aria-hidden="true">✦</span><span class="sparkle s3" aria-hidden="true">♡</span>
+    <div class="tiny-label">24 little letters · just for you</div>
+    <h1 id="hero-heading">For Stella,<br />With Love.</h1>
+    <img src="illustrations/welcome.webp" class="hero-art" alt="따뜻한 저녁 풍경 속에서 함께 앉아 있는 가족의 뒷모습" />
+    <p class="hero-ko">벼리야, 오늘은 어떤 하루였어?</p>
+    <p class="hero-desc">하루에 한 통씩, 아빠가 보내는 작은 편지.<br />벼리가 천천히 읽어 가면 되는 마음들이야.</p>
+    <button id="todayBtn" class="main-btn" type="button">오늘의 편지 열기 <span aria-hidden="true">♡</span></button>
+  </section>
+  <section class="progress-panel" aria-label="편지 진행 상황">
+    <div class="progress-row"><span class="progress-title" id="progressTitle">우리의 편지 여행</span><span class="progress-count" id="progressCount">0 / 24</span></div>
+    <div class="progress-track" role="progressbar" aria-label="읽은 편지" aria-valuemin="0" aria-valuemax="24" aria-valuenow="0" id="progressTrack"><div class="progress-fill" id="progressFill"></div></div>
+    <p class="progress-hint" id="progressHint">오늘부터 하루에 한 장씩 열 수 있어.</p>
+  </section>
+  <section class="reminder-panel" aria-label="편지 알림 설정">
+    <p class="reminder-title">매일 저녁, 벼리에게 편지 한 통 ♡</p>
+    <p class="reminder-desc">매일 저녁 8시에 편지를 떠올릴 수 있도록<br>휴대폰 캘린더에 24일 알림을 추가할 수 있어.</p>
+    <button id="reminderBtn" class="reminder-btn" type="button">매일 저녁 8시 알림 일정 받기</button>
+    <p class="reminder-help">일정 파일을 받아 캘린더에 추가해야 알림이 설정돼.<br>별도의 푸시 알림이나 자동 메시지 발송은 하지 않아.</p>
+  </section>
+  <section aria-labelledby="gridTitle">
+    <div class="section-title"><h2 id="gridTitle">스물네 개의 마음</h2><span>TO. 벼리 ♡</span></div>
+    <div id="letterGrid" class="grid" aria-label="24개의 편지"></div>
+    <button class="final-btn" id="finalBtn" type="button" hidden>마지막 마음 열기 ♡</button>
+    <p class="footnote">열린 편지는 언제든 다시 읽을 수 있어.<br />아직 열리지 않은 편지는 날짜가 되면 열릴 거야.</p>
+  </section>
+  <footer class="footer">Always here for you. ♡</footer>
+</main>
+<div id="overlay" class="overlay" aria-hidden="true">
+  <section id="paper" class="paper" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" tabindex="-1">
+    <button id="closeBtn" class="close" type="button" aria-label="편지 닫기">×</button>
+    <div id="dialogContent"></div>
+  </section>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script type="application/json" id="letterData">["01. 아 — 아무리 멀리 떨어져 있어도, 벼리가 기쁜 날엔 함께 웃고 힘든 날엔 기댈 수 있는 엄마 아빠가 있어…", "02. 빠 — 빠르게 앞서가는 사람들이 너무 부러울때도 많지 그치만, 천천히 걷는 사람에게만 보이는 풍경도 또 그 속도이기 때문에 만날 수 있는 소중한 인연도 있거든…", "03. 한 — 한 번의 실패가 네 인생을 결정하지는 않을거야… 그 실패를 어떻게 받아 들이는 지가 앞으로의 인생을 결정할 수는 있어… 그런 면에서 지금의 실패는 더 좋은 길을 발견하는 시작일 수도 있어… 실패는 성공의 어머니라고들 하잖아?? ", "04. 텐 — 텐션이 바닥인 날도 있을거야. 지치지 않는 사람은 없으니까... 그런 날엔 억지로 웃거나 씩씩한 척하지 않아도 괜찮아… 벼리의 지친모습에도 곁을 지켜주는 사람을 엄마 아빠 말고 꼭 한사람 정도는 만들어 두렴…", "05. 벼 — 벼리의 다정함이 조금의 실망감으로 돌아 오더라도 너무 상처 받지 않았으면 좋겠어… 남들에게 다정하지 않은 사람들은 스스로에게 줄수 있는 사랑의 크기도 작을 거란 생각이 드네 아빠는… 남들에게 다정한 만큼, 아니 그것보다는 조금 더 크게 벼리 스스로를 아끼고 사랑하렴.", "06. 리 — 리듬이 좀 흐트러져? 그런 날은 그냥 흐트러진 마음으로 가볍게 지내렴… 가끔은 쉬어 가는 박자도 필요하잖아? 지독한 다이어트에 소중한 하루의 치팅데이 정도라 생각해~", "07. 가 — 가끔은 누군가에게 미움받을 용기도 필요한 것 같아… 모든 사람을 만족시키며 살 수는 없으니까…. 인간관계는 상대적인 거라 상대방의 상태에 따라서 같은 말도 다르게 전달 될 때도 있고… 억지로 바로 잡으려고 하지 않아도 되, 나를 잘 이해 하는 사람은 곰곰히 생각하고 다시 나를 찾게 될거야…", "08. 세 — 세상엔 아직 네가 만나지 못한 좋은 사람들과 경험하지 못한 행복이 아주 많이 남아 있어… 지금 알고 있는 세상의 크기에 생각을 끼워 맞추지 말고, 언제나 더 큰 세상을 꿈꾸면 좋겠어…", "09. 상 — 상처받았다고 네 다정함까지 버리지는 마… 언젠가 아빠가 얘기 했듯이 누군가에겐 그 다정함이 세상에서 가장 따뜻한 선물일 테니까…", "10. 에 — 에너지가 모두 소진된 날에는 아무것도 하지 않아도 돼… 쉬는 건 게으른 게 아니라 다시 걸어가기 위한 준비야… 잘 쉬고 잘 노는 사람이 일도 잘 해… ", "11. 서 — 서두르지 않아도 돼… 조바심이 일을 망치는 경우도 많지… 꽃마다 피어나는 계절이 다르듯 사람마다 빛나는 순간도 다르니까… 오늘이 정말 힘든 날이었다면 곧 오늘 힘들었던 만큼 더 크고 밝게 별처럼 빛나는 순간이 올거야…", "12. 가 — 가장 행복했던 순간을 떠올려 봐… 늘 떠올리며 기운내고 있지??? 오늘 어려운 상황이 있었어도 한발짝 물러서서 크게 한 호흡하고서 돌아보면 의외로 그저 평범한 이벤트였을지도 몰라…", "13. 장 — 장담하건대, 인생에는 계획대로 되지 않아… 쉬운 일도 없고 내맘대로 되는 건 더 없지… 하지만 그렇게 흘러가는 게 오히려 다행인 일들도 참 많더라…", "14. 소 — 소중한 사람을 곁에 두는 것도 중요하지만, 너를 소중히 여기는 사람 곁에 머무는 것도 중요해… ", "15. 중 — 중요한 선택을 앞두었을 때 남들의 기대보다 네 마음의 소리에 조금 더 귀 기울여… 비유가 좀 그렇지만, 주식도 도박도 남말 듣다가 폭망하는 경우가 많더라… ㅎ", "16. 한 — 한참을 고민하고도 답을 찾지 못할 때가 있어... 그럴 땐 당장 답을 내리지 않아도 괜찮아… 가끔은 잊고있던 그때는 풀지 못했던 3년전 수학문제의 정답이 떠 오를 때도 있잖아??? 벼리는 없나?? 아빤 가끔 있거든… 가끔은 너무 집중할때보다 조금 느슨하게 생각의 속도를 느리게 할때 더 좋은 생각이, 방향이, 답이 나올때도 있어…", "17. 존 — 존중받기 위해 네가 가진 좋은 모습을 억지로 바꿀 필요는 없어… 있는 그대로의 너를 아끼는 사람을 만나면 돼… 우리 딸은 욕도 안하고(아닌가? ^^) 다정하고 이쁘고 통통하고 해서 있는 그대로를 바라 봐 줄 수 있는 좋은 친구들 많이 만들 수 있을거야..", "18. 재 — 재능이란게 처음부터 특별한 능력만을 뜻하기도 하지만, 좋아하는 무언가를 오래도록 포기하지 않을 수 있는 능력도 큰 재능이지… ", "19. 인 — 인생은 운과 타이밍이지만, 그 순간을 알아보고 붙잡을 수 있는 건 준비해 온 너 자신이란다…", "20. 거 — 거창한 성공을 이루지 않아도 괜찮아… 아빠는 앞으로 벼리가 자기 삶을 좋아하며 살아가는 사람이 되었으면 해… 그러기 위해 내 앞가림 할만한 무언가를 준비하는 과정이라고 생각하면 지금에 좀 더 집중 할 수 있지 않을까??", "21. 잊 — 잊지 마… 누군가 너를 알아주지 않는다고 해서 벼리가 또 그 진심의 가치가 작아지는 건 절대 아니야…", "22. 지 — 지금의 많은 허들과 걱정들이 언젠가 웃으며 이야기할 수 있는 추억이 되기를, 아빠는 늘 바라고 있어… ", "23. 말 — 말하지 않아도 모든 걸 알아주는 아빠라면 좋겠지만, 아빠도 서툴 때가 많아... 드라마에도 나온 대사이지만 아빠도 아빠가 처음이잖아… 그러니 아빠가 잘 모르고 하는 말이면 바로 잡아 주고, 힘들 땐 언제든 이야기해 주렴…", "24. 길 — 길이 어디로 이어지든, 얼마나 멀리 가든, 어떤 모습으로 돌아오든, 아빠는 언제나 벼리가 돌아와 쉴 수 있는 자리에 있을 게… 최선을 다해서 오래 건강해 볼게…\n딸도 늘 행복할 수 있게 항상 건강을 준비하자… 오래오래 아빠랑 엄마랑 행복하게 잘 살자… 말 안해도 잘 알겠지만, 사랑해 딸!"]</script>
+<script>
+(() => {
+  'use strict';
+  const LETTERS = JSON.parse(document.getElementById('letterData').textContent);
+  const SECRET = '아빠한텐 벼리가 세상에서 가장 소중한 존재인 거 잊지말길';
+  const letterText = raw => raw.replace(/^\d{2}\.\s*[가-힣]\s*—\s*/u,'');
+  const STORAGE_KEY = 'for_stella_letters_2026_v1';
+  const ONE_DAY = 86400000;
+  const el = id => document.getElementById(id);
+  const localDate = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  const ordinal = s => { const p=s.split('-').map(Number); return Date.UTC(p[0],p[1]-1,p[2]) / ONE_DAY; };
+  const dateFromOffset = (day) => { const p=state.start.split('-').map(Number); const d=new Date(Date.UTC(p[0],p[1]-1,p[2]+day)); return `${d.getUTCMonth()+1}월 ${d.getUTCDate()}일`; };
+  const todayIndex = () => Math.max(0, Math.min(23, Math.floor(ordinal(localDate())-ordinal(state.start))));
+  const availableCount = () => Math.max(1, Math.min(24, Math.floor(ordinal(localDate())-ordinal(state.start))+1));
+  let state;
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    state = saved && /^\d{4}-\d{2}-\d{2}$/.test(saved.start) ? saved : null;
+  } catch(e) { state = null; }
+  if (!state) state = {start:localDate(),opened:[]};
+  if(!Array.isArray(state.opened))state.opened=[];
+  state.opened = [...new Set(state.opened.filter(n => Number.isInteger(n) && n>=0 && n<24))];
+  const save = () => { try {localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){} };
+  save();
+  const grid=el('letterGrid'), overlay=el('overlay'), paper=el('paper');
+  let lastFocus=null, toastTimer;
+  const completed = () => availableCount() === 24 && state.opened.length === 24;
+  const savedCount = () => state.opened.length;
+  const toast = msg => {const t=el('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2600);};
+  function render(){
+    const available = availableCount();
+    el('progressCount').textContent=`${savedCount()} / 24`;
+    el('progressTrack').setAttribute('aria-valuenow',String(savedCount()));
+    el('progressFill').style.width=`${savedCount()/24*100}%`;
+    el('progressHint').textContent= completed() ? '24통의 편지를 모두 열었어. 마지막에 마음 하나가 더 남아 있어. ♡' : available === 1 ? '첫 번째 편지가 준비됐어. 위 버튼을 누르면 읽을 수 있어. ♡' : `오늘은 ${String(available).padStart(2,'0')}번째 날 · 읽지 않은 편지도 언제든 열어 봐.`;
+    el('todayBtn').innerHTML = `DAY ${String(available).padStart(2,'0')} 편지 ${state.opened.includes(available-1) ? '다시 읽기' : '열기'} <span aria-hidden="true">♡</span>`;
+    grid.innerHTML='';
+    LETTERS.forEach((_, i) => {
+      const locked = i>=available, opened=state.opened.includes(i);
+      const b=document.createElement('button');b.type='button';
+      b.className=`tile ${locked?'locked':opened?'opened':'ready'}`;
+      b.setAttribute('aria-label',`DAY ${i+1}, ${locked ? `${dateFromOffset(i)}에 열림` : opened ? '다시 읽기' : '편지 열기'}`);
+      b.innerHTML=`<span class="tile-num">DAY ${String(i+1).padStart(2,'0')}</span><span class="tile-icon" aria-hidden="true">${locked?'♧':opened?'♡':'✉'}</span><span class="tile-state">${locked?dateFromOffset(i):opened?'읽은 편지':'열어 보기'}</span>`;
+      b.addEventListener('click',()=>locked?toast(`이 편지는 ${dateFromOffset(i)}에 열 수 있어. ♡`):openLetter(i));
+      grid.appendChild(b);
+    });
+    el('finalBtn').hidden=!completed();
+  }
+  function setDialogHtml(html){
+    el('dialogContent').innerHTML=html;
+    overlay.classList.add('visible');overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';paper.scrollTop=0;
+    setTimeout(()=>el('closeBtn').focus(),100);
+  }
+  function openLetter(index){
+    if(index>=availableCount()){toast(`이 편지는 ${dateFromOffset(index)}에 열 수 있어. ♡`);return;}
+    lastFocus=document.activeElement;
+    const newlyRead=!state.opened.includes(index);
+    if(newlyRead){state.opened.push(index);state.opened.sort((a,b)=>a-b);save();render();}
+    // 첫 글자 힌트(번호·음절·대시)는 원문 데이터에 남기되, 화면에는 편지만 자연스럽게 보여 준다.
+    const body=document.createElement('div');body.className='letter-body';body.textContent=LETTERS[index].replace(/^\d{2}\.\s+[가-힣]\s+—\s*/, '');
+    const container=document.createElement('div');
+    container.innerHTML=`<div class="letter-overline">A LETTER FOR STELLA</div><h2 class="letter-day" id="dialogTitle">Day ${String(index+1).padStart(2,'0')}</h2><div class="envelope-line"></div>`;
+    const art=document.createElement('div');art.className='letter-art';
+    const picture=document.createElement('img');picture.src=`illustrations/day-${String(index+1).padStart(2,'0')}.webp`;
+    picture.alt=`${index+1}일 차 편지와 어울리는 따뜻한 수채화 풍경`;
+    art.appendChild(picture);container.appendChild(art);
+    container.appendChild(body);
+    const sig=document.createElement('p');sig.className='letter-signature';sig.textContent='♡ 아빠가';container.appendChild(sig);
+    const ending=document.createElement('div');ending.className='letter-end';
+    if(completed()&&index===23) {
+      const f=document.createElement('button');f.className='main-btn';f.type='button';f.textContent='마지막 선물 열기 ♡';f.addEventListener('click',openSecret);ending.appendChild(f);
+    } else {
+      const close=document.createElement('button');close.className='secondary-btn';close.type='button';close.textContent='편지 접어두기';close.addEventListener('click',closeDialog);ending.appendChild(close);
+    }
+    container.appendChild(ending);
+    el('dialogContent').replaceChildren(container);
+    overlay.classList.add('visible');overlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';paper.scrollTop=0;
+    setTimeout(()=>el('closeBtn').focus(),100);
+  }
+  function openSecret(){
+    if(!completed())return;
+    // This is a celebratory presentation, not a security boundary.
+    try { sessionStorage.setItem('stella_finale_ready', '1'); } catch(e) {}
+    window.location.href = 'finale.html';
+  }
+  function closeDialog(){overlay.classList.remove('visible');overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';if(lastFocus&&document.contains(lastFocus))lastFocus.focus();}
+  el('closeBtn').addEventListener('click',closeDialog);
+  overlay.addEventListener('click',e=>{if(e.target===overlay)closeDialog();});
+  window.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('visible'))closeDialog();if(e.key==='Tab'&&overlay.classList.contains('visible')){const focusables=[...paper.querySelectorAll('button:not([disabled])')];if(focusables.length){const first=focusables[0],last=focusables[focusables.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}}});
+
+  const icsEscape = s => s.replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+  const icsDate = d => `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  function calendarFile(){
+    const startParts=state.start.split('-').map(Number);
+    const startDay=new Date(startParts[0],startParts[1]-1,startParts[2]);
+    const now=new Date();
+    const events=[];
+    for(let i=0;i<24;i++){
+      const d=new Date(startDay.getFullYear(),startDay.getMonth(),startDay.getDate()+i,20,0,0);
+      if(d<=now) continue;
+      const date=icsDate(d);
+      const end=`${date}T201000`;
+      events.push([
+        'BEGIN:VEVENT',`UID:for-stella-${i+1}-${date}@letters.local`,
+        `DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'')}`,
+        `DTSTART:${date}T200000`,`DTEND:${end}`,
+        `SUMMARY:${icsEscape('For Stella · 오늘의 편지 ♡')}`,
+        `DESCRIPTION:${icsEscape('오늘은 '+(i+1)+'번째 편지를 읽는 날이야. '+location.href.split('#')[0])}`,
+        'TRANSP:TRANSPARENT', 'BEGIN:VALARM', 'ACTION:DISPLAY',
+        `DESCRIPTION:${icsEscape('벼리야, 오늘의 작은 편지가 기다려 ♡')}`,
+        'TRIGGER:-PT0M', 'END:VALARM', 'END:VEVENT'
+      ].join('\r\n'));
+    }
+    if(!events.length){toast('24일의 일정이 이미 지나갔어. ♡');return;}
+    const calendar=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//For Stella//24 Letters//KO','CALSCALE:GREGORIAN','METHOD:PUBLISH',...events,'END:VCALENDAR'].join('\r\n')+'\r\n';
+    const blob=new Blob([calendar],{type:'text/calendar;charset=utf-8'});
+    const href=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=href;a.download='for-stella-24-day-reminders.ics';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(href),30000);
+    toast('알림 일정 파일을 받았어. 캘린더에서 가져와 줘 ♡');
+  }
+  el('reminderBtn').addEventListener('click',calendarFile);
+  el('todayBtn').addEventListener('click',()=>openLetter(availableCount()-1));
+  el('finalBtn').addEventListener('click',openSecret);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)render();});
+  setInterval(()=>{if(!document.hidden)render();},60000);
+  render();
+})();
+</script>
+</body>
+</html>
